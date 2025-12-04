@@ -2,6 +2,7 @@
 
 | Date | Commit | Author | Description |
 |:---|:---|:---|:---|
+| 2025-12-04 | 7f93716 | Matthias G. Eckermann | Add history |
 | 2025-12-04 | e231a97 | Matthias G. Eckermann | Cleanup Makefile |
 | 2025-12-04 | 2756db1 | Matthias G. Eckermann | Split off memory management |
 | 2025-12-04 | f914075 | Matthias G. Eckermann | Add quickstart, finally |

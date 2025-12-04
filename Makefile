@@ -24,7 +24,7 @@ HISTORY_LIMIT = -n 42
 # -----------------
 
 # Common options for all formats
-COMMON_FLAGS = --number-sections --top-level-division=chapter
+COMMON_FLAGS = --number-sections --top-level-division=chapter --highlight-style=tango
 
 # PDF Specific Flags (The "Modern Professional" Setup)
 # Includes the xcolor fixes, booktabs, and KOMA-Script class

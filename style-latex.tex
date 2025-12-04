@@ -25,3 +25,34 @@
     \newpage
 }
 
+%
+% Better formatting of code blocks
+%
+
+% 1. Load tcolorbox and fvextra
+\usepackage[most]{tcolorbox}
+\usepackage{fvextra}
+
+% 2. Define colors
+\definecolor{code-bg}{HTML}{F5F7F9}
+\definecolor{code-frame}{HTML}{E1E4E8}
+
+% 3. The Smart Definition
+% We check if 'Shaded' is defined. If yes, we renew it. If no, we create it.
+\ifdefined\Shaded
+  \renewenvironment{Shaded}
+  {\begin{tcolorbox}[enhanced, breakable, colback=code-bg, colframe=code-frame, boxrule=0.5pt, arc=3mm, shadow={0mm}{0mm}{0mm}{white}]}
+  {\end{tcolorbox}}
+\else
+  \newenvironment{Shaded}
+  {\begin{tcolorbox}[enhanced, breakable, colback=code-bg, colframe=code-frame, boxrule=0.5pt, arc=3mm, shadow={0mm}{0mm}{0mm}{white}]}
+  {\end{tcolorbox}}
+\fi
+
+% 4. Fix line wrapping
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+  breaklines=true,
+  breakanywhere=true,
+  commandchars=\\\{\}
+}
+
