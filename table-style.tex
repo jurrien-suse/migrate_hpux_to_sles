@@ -1,0 +1,10 @@
+% Load xcolor with table support
+% \usepackage[table]{xcolor}
+
+% Set the row colors (Odd rows white, Even rows light gray)
+\rowcolors{2}{white}{gray!10}
+
+% Optional: Make the header row bold and a specific color
+\let\oldtoprule\toprule
+\renewcommand{\toprule}{\oldtoprule\rowcolor{gray!25}}
+
