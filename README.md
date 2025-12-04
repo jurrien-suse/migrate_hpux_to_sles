@@ -13,8 +13,6 @@
 * Boot and Init System (SysV init vs. systemd)
 * File System Hierarchy (Older UNIX vs. UsrEtc Model)
 
----
-
 ### Daily Administration and Command Tools
 * System Management Tools (SMH/SAM vs. Cockpit)
 * Package Management (SD-UX/Depots vs. RPM/zypper)
@@ -22,16 +20,12 @@
 * Networking Configuration (Traditional vs. NetworkManager)
 * Command Shells (sh/ksh vs. Bash)
 
----
-
 ### Advanced Systems and Security
 * Security & MAC (DAC/Trusted System vs. SELinux/firewalld)
 * Logging and Auditing (Syslog/audsys vs. Journald/Auditd)
 * High Availability (Serviceguard vs. Pacemaker/Corosync)
 * Kernel Patching (Requires Reboot vs. kGraft Live Patching)
 * Time Sync Services (ntpd vs. Chrony)
-
----
 
 ### Future-Proofing and Development Ecosystem
 * Virtualization/Containers (HPVM vs. KVM/Podman/Docker)
@@ -41,11 +35,11 @@
 * Dynamic Libraries (SHLI vs. ELF/glibc)
 
 
+---
+
 ## HP-UX vs. SLES 16: 20 Key Differences for System Administrators
 
 The following 20 topics highlight the crucial distinctions between the proprietary **HP-UX** (a legacy UNIX) and the modern, open-source **SLES 16** (Enterprise Linux).
-
----
 
 ## Primary Differences: Architecture, Core Tools, and Management (Topics 1-10)
 
@@ -100,8 +94,6 @@ These differences affect daily administration and fundamental system operations.
 
 * **HP-UX:** Follows an older UNIX file system structure.
 * **SLES 16:** Adheres to the modernized **UsrEtc model**, strictly separating distributor binaries (`/usr`) from local customizations (`/etc`), which greatly simplifies maintenance and upgrades.
-
----
 
 ## Secondary Differences: Compliance, Performance, and Context (Topics 11-20)
 
