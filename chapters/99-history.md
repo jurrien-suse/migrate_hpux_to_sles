@@ -2,6 +2,8 @@
 
 | Date | Commit | Author | Description |
 |:---|:---|:---|:---|
+| 2025-12-04 | 2ce4654 | Matthias G. Eckermann | Add ToC |
+| 2025-12-04 | 12a63c8 | Matthias G. Eckermann | Fix code blocks: do not need backslashes ... |
 | 2025-12-04 | d70e06e | Matthias G. Eckermann | Better formatting of code blocks |
 | 2025-12-04 | 7f93716 | Matthias G. Eckermann | Add history |
 | 2025-12-04 | e231a97 | Matthias G. Eckermann | Cleanup Makefile |
