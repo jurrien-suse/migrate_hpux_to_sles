@@ -56,3 +56,18 @@
   commandchars=\\\{\}
 }
 
+%
+% Better formatting of URLs in tables
+%
+% Allow URLs to break on any character
+\usepackage{xurl} 
+
+% Improve standard link breaking settings
+% Delay configuration until everything is loaded
+\AtBeginDocument{
+    \hypersetup{
+      breaklinks=true,
+      pdfborder={0 0 0}
+    }
+}
+
