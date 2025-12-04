@@ -1,0 +1,27 @@
+% Switch standard font to Sans-Serif
+\renewcommand{\familydefault}{\sfdefault}
+
+% Set the row colors (Odd rows white, Even rows light gray)
+\rowcolors{2}{white}{gray!10}
+
+% Optional: Make the header row bold and a specific color
+\let\oldtoprule\toprule
+\renewcommand{\toprule}{\oldtoprule\rowcolor{gray!25}}
+
+% Load the license package with your specific settings
+\usepackage[
+    type={CC},
+    modifier={by-nd},
+    version={4.0}
+]{doclicense}
+
+% Optional: Put the license at the bottom of the title page automatically
+\usepackage{etoolbox}
+\AfterEndEnvironment{titlepage}{
+    \vspace*{\fill}
+    \begin{center}
+        \doclicenseThis
+    \end{center}
+    \newpage
+}
+

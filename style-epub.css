@@ -1,0 +1,58 @@
+/* Typography */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0 5px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    font-weight: bold;
+    color: #2c3e50; /* Dark Blue-Grey */
+    margin-top: 1.5em;
+}
+h1 {
+    text-align: center;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 0.5em;
+}
+
+/* Code Blocks */
+pre {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-left: 3px solid #f36d33; /* Orange accent */
+    color: #666;
+    page-break-inside: avoid;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 1.6em;
+    max-width: 100%;
+    overflow: auto;
+    padding: 1em 1.5em;
+    display: block;
+    word-wrap: break-word;
+}
+
+/* Modern Tables (from our previous discussion) */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 0.9em;
+}
+thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+}
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
