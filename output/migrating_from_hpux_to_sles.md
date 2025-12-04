@@ -276,19 +276,39 @@ On SLES 16:
   * /opt: Reserved for large, self-contained third-party applications (Oracle DB, SAP HANA, Microsoft, proprietary agents).  
   * /usr/local: Reserved for software compiled manually by the admin (./configure && make install). SLES package manager will *never* touch files in /usr/local.
 
+## Memory Management
+
+### Memory Overcommit vs. Strict Allocation
+
+HP-UX is conservative. A malloc() call generally reserves backing store immediately. If swap+RAM is full, malloc fails.  
+SLES 16 (Linux kernel) is optimistic. It uses Overcommit. malloc almost always succeeds, returning a pointer to virtual memory. Physical memory is only allocated when the page is written to (Fault-in).  
+Risk: If the system runs out of physical RAM, the Linux OOM Killer (Out of Memory Killer) activates. It uses a heuristic to select a process (often the one using the most memory, like a Database) and kill \-9 it to save the kernel.  
+Mitigation for DB Servers:  
+On SLES 16 hosting Oracle/SAP, administrators often tune /etc/sysctl.conf:
+
+```bash
+vm.overcommit\_memory \= 2  \# Strict accounting (like HP-UX)  
+vm.overcommit\_ratio \= 50  \# Limit to Swap \+ 50% RAM
+```
+
+This forces the kernel to behave more like HP-UX, returning errors on malloc rather than killing random processes later.
+
+**Caveat:** Please check the latest information on the SUSE website, and in the documentation of your ISV, whether these settings are recommended.
+
+
 # Daily Administration and Command Tools
 
 Moving from the HP-UX sam and command-line ecosystem to SLES 16 requires mastering a new set of tools that are generally more automated but abstract away more detail.
 
-* Package Management Deep Dive: SD-UX vs. Zypper and Cockpit
+* Package Management: SD-UX vs. Zypper and Cockpit
 * Disk, LVM, and Filesystems (HP LVM/VxFS vs. Linux LVM/Btrfs/Snapper)
 * Missing
-	* System Management Tools (SMH/SAM vs. Cockpit
+	* System Management Tools (SMH/SAM vs. Cockpit)
 	* Networking Configuration (Traditional vs. NetworkManager)
 	* Command Shells (sh/ksh vs. Bash) 
 
 
-## Package Management Deep Dive: SD-UX vs. Zypper and Cockpit
+## Package Management: SD-UX vs. Zypper and Cockpit
 
 For the HP-UX administrator, swinstall, swlist, and swremove (SD-UX) are muscle memory. The transition to SLES 16 requires a conceptual shift from managing static "software depots" to interacting with dynamic, dependency-aware "repositories" via the **Zypper** command-line engine and the **Cockpit** web interface.
 
@@ -607,7 +627,6 @@ kGraft allows the administrator to apply critical security patches to the runnin
 
 * Configuration Management: The Shift to IaC
 * Dynamic Linking, Compilation, and Symbol Versioning: Itanium vs. x86-64
-* Memory Management
 * Missing
 	* Development Tools (Proprietary Compilers vs. GCC): Extended Development framework description
 	* Virtualization/Containers (HPVM vs. KVM/Podman/Docker)
@@ -664,26 +683,6 @@ When recompiling in-house C/C++ applications from HP-UX to SLES 16:
 
 
 
-## Memory Management
-
-### Memory Overcommit vs. Strict Allocation
-
-HP-UX is conservative. A malloc() call generally reserves backing store immediately. If swap+RAM is full, malloc fails.  
-SLES 16 (Linux kernel) is optimistic. It uses Overcommit. malloc almost always succeeds, returning a pointer to virtual memory. Physical memory is only allocated when the page is written to (Fault-in).  
-Risk: If the system runs out of physical RAM, the Linux OOM Killer (Out of Memory Killer) activates. It uses a heuristic to select a process (often the one using the most memory, like a Database) and kill \-9 it to save the kernel.  
-Mitigation for DB Servers:  
-On SLES 16 hosting Oracle/SAP, administrators often tune /etc/sysctl.conf:
-
-Bash
-
-vm.overcommit\_memory \= 2  \# Strict accounting (like HP-UX)  
-vm.overcommit\_ratio \= 50  \# Limit to Swap \+ 50% RAM
-
-This forces the kernel to behave more like HP-UX, returning errors on malloc rather than killing random processes later.
-
-**Caveat:** Please check the latest information on the SUSE website, and in the documentation of your ISV, whether these settings are recommended.
-
-
 
 # Appendix
 
@@ -705,36 +704,3 @@ This forces the kernel to behave more like HP-UX, returning errors on malloc rat
 | **System Log Review** | Check the system boot log | `tail /var/adm/syslog/syslog.log` | `journalctl -b` |
 
 
-# Version History {-}
-
-| Date | Commit | Author | Description |
-|:---|:---|:---|:---|
-| 2025-12-04 | f5a0142 | Matthias G. Eckermann | Cleanup tasks and README.md |
-| 2025-12-04 | af6328e | Matthias G. Eckermann | Cleanup Disk/LVM section |
-| 2025-12-04 | 2ce4654 | Matthias G. Eckermann | Add ToC |
-| 2025-12-04 | 12a63c8 | Matthias G. Eckermann | Fix code blocks: do not need backslashes ... |
-| 2025-12-04 | d70e06e | Matthias G. Eckermann | Better formatting of code blocks |
-| 2025-12-04 | 7f93716 | Matthias G. Eckermann | Add history |
-| 2025-12-04 | e231a97 | Matthias G. Eckermann | Cleanup Makefile |
-| 2025-12-04 | 2756db1 | Matthias G. Eckermann | Split off memory management |
-| 2025-12-04 | f914075 | Matthias G. Eckermann | Add quickstart, finally |
-| 2025-12-04 | eba7bd7 | Matthias G. Eckermann | Add quickstart |
-| 2025-12-04 | aea3d7b | Matthias G. Eckermann | Add Documentation and HW Architecture sections |
-| 2025-12-04 | fe949b0 | Matthias G. Eckermann | README cleanup |
-| 2025-12-04 | 69f6db4 | Matthias G. Eckermann | Cleanup README. Add Intro Chapter |
-| 2025-12-04 | bb0c693 | Matthias G. Eckermann | rename files |
-| 2025-12-04 | 0307e81 | Matthias G. Eckermann | Cleanup filenames |
-| 2025-12-04 | 72feb81 | Matthias G. Eckermann | cleanup |
-| 2025-12-04 | 5ed1771 | Matthias G. Eckermann | Cleanup part-files |
-| 2025-12-04 | 14aa435 | Matthias G. Eckermann | Add license information. Add ePub format |
-| 2025-12-04 | 146b1fe | Matthias G. Eckermann | SansSerif font by default |
-| 2025-12-04 | 96592d0 | Matthias G. Eckermann | Cleanup of files and formatting |
-| 2025-12-04 | cbe73c6 | Matthias G. Eckermann | Better structure with chapters and sections, and formatting in LaTeX |
-| 2025-12-04 | 0822761 | Matthias G. Eckermann | Better LaTeX output |
-| 2025-12-04 | 84d3346 | Matthias G. Eckermann | More modern LaTeX style. Update Chapter 07 (zypper), incl. comparison table |
-| 2025-12-04 | 1b2472e | Matthias G. Eckermann | Drafts for Preface, Chapters 01, 02, 07, 08, 11-14, 17, 20 |
-| 2025-12-01 | aca816a | Matthias G. Eckermann | fix README.md and Makefile |
-| 2025-12-01 | 06d86d5 | Matthias G. Eckermann | more cleanup |
-| 2025-12-01 | 140cddc | Matthias G. Eckermann | Build structure |
-| 2025-12-01 | 3187eb6 | Matthias G. Eckermann | Initial commit |
-: Recent Changes (Auto-generated)
