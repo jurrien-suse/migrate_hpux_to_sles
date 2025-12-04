@@ -1,5 +1,5 @@
 
-# Part IV: Future-Proofing and Development Ecosystem
+# Future-Proofing and Development Ecosystem
 
 * Virtualization/Containers (HPVM vs. KVM/Podman/Docker)
 * Config Management (Manual/Custom vs. Ansible/Salt)
