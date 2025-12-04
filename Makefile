@@ -72,7 +72,7 @@ history:
 	@echo "" >> $(HISTORY_FILE)
 	@echo ": Recent Changes (Auto-generated)" >> $(HISTORY_FILE)
 
-migrating_from_hpux_to_sles.md: history $(SOURCES)
+migrating_from_hpux_to_sles.md: $(SOURCES)
 	cat $(SOURCES) > $@
 
 %.pdf: %.tex 

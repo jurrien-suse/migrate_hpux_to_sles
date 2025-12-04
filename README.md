@@ -10,10 +10,10 @@
 * The UsrEtc Revolution and Filesystem Hierarchy Divergence
 
 ## Daily Administration and Command Tools
-* Package Management Deep Dive: SD-UX vs. Zypper and Cockpit
+* Package Management: SD-UX vs. Zypper and Cockpit
 * Disk, LVM, and Filesystems (HP LVM/VxFS vs. Linux LVM/Btrfs/Snapper)
 * Missing
-	* System Management Tools (SMH/SAM vs. Cockpit
+	* System Management Tools (SMH/SAM vs. Cockpit)
 	* Networking Configuration (Traditional vs. NetworkManager)
 	* Command Shells (sh/ksh vs. Bash)  
 
