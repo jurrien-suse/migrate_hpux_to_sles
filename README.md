@@ -2,40 +2,43 @@
 
 ## Ideation Table of Contents: HP-UX vs. SLES 16
 
-### Part I: The Architectural Divide (System Core & Philosophy)
-* **Chapter 1:** Core OS and Kernel (Proprietary UNIX vs. Open-source Linux)
-* **Chapter 2:** Hardware Choice (Multi-platform/Active)
-* **Chapter 3:** Vendor Support Model (SUSE's Subscription model)
-* **Chapter 4:** Boot and Init System (SysV init vs. systemd)
-* **Chapter 5:** File System Hierarchy (Older UNIX vs. UsrEtc Model)
+### SLES 16 Basics
+* SUSE Documentation
+* Availability on different hardware architecture
+
+### The Architectural Divide (System Core & Philosophy)
+* Core OS and Kernel (Proprietary UNIX vs. Open-source Linux)
+* Hardware Choice (Multi-platform/Active)
+* Vendor Support Model (SUSE's Subscription model)
+* Boot and Init System (SysV init vs. systemd)
+* File System Hierarchy (Older UNIX vs. UsrEtc Model)
 
 ---
 
-### Part II: Daily Administration and Command Tools
-* **Chapter 6:** System Management Tools (SMH/SAM vs. Cockpit)
-* **Chapter 7:** Package Management (SD-UX/Depots vs. RPM/zypper)
-* **Chapter 8:** LVM and Filesystems (HP LVM/VxFS vs. Linux LVM/Btrfs/Snapper)
-* **Chapter 9:** Networking Configuration (Traditional vs. NetworkManager)
-* **Chapter 10:** Command Shells (sh/ksh vs. Bash)
+### Daily Administration and Command Tools
+* System Management Tools (SMH/SAM vs. Cockpit)
+* Package Management (SD-UX/Depots vs. RPM/zypper)
+* LVM and Filesystems (HP LVM/VxFS vs. Linux LVM/Btrfs/Snapper)
+* Networking Configuration (Traditional vs. NetworkManager)
+* Command Shells (sh/ksh vs. Bash)
 
 ---
 
-### Part III: Advanced Systems and Security
-* **Chapter 11:** Security & MAC (DAC/Trusted System vs. SELinux/firewalld)
-* **Chapter 12:** Logging and Auditing (Syslog/audsys vs. Journald/Auditd)
-* **Chapter 13:** High Availability (Serviceguard vs. Pacemaker/Corosync)
-* **Chapter 14:** Kernel Patching (Requires Reboot vs. kGraft Live Patching)
-* **Chapter 15:** Time Sync Services (ntpd vs. Chrony)
+### Advanced Systems and Security
+* Security & MAC (DAC/Trusted System vs. SELinux/firewalld)
+* Logging and Auditing (Syslog/audsys vs. Journald/Auditd)
+* High Availability (Serviceguard vs. Pacemaker/Corosync)
+* Kernel Patching (Requires Reboot vs. kGraft Live Patching)
+* Time Sync Services (ntpd vs. Chrony)
 
 ---
 
-### Part IV: Future-Proofing and Development Ecosystem
-* **Chapter 16:** Virtualization/Containers (HPVM vs. KVM/Podman/Docker)
-* **Chapter 17:** Config Management (Manual/Custom vs. Ansible/Salt)
-* **Chapter 18:** Monitoring & Performance (GlancePlus vs. Prometheus/Grafana)
-* **Chapter 19:** Development Tools (Proprietary Compilers vs. GCC)
-* **Chapter 20:** Dynamic Libraries (SHLI vs. ELF/glibc)
-
+### Future-Proofing and Development Ecosystem
+* Virtualization/Containers (HPVM vs. KVM/Podman/Docker)
+* Config Management (Manual/Custom vs. Ansible/Salt)
+* Monitoring & Performance (GlancePlus vs. Prometheus/Grafana)
+* Development Tools (Proprietary Compilers vs. GCC)
+* Dynamic Libraries (SHLI vs. ELF/glibc)
 
 
 ## HP-UX vs. SLES 16: 20 Key Differences for System Administrators
