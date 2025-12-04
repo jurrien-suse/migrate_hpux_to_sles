@@ -480,10 +480,10 @@ abstract away more detail.
 
 * Package Management: SD-UX vs. Zypper and Cockpit
 * Disk, LVM, and Filesystems (HP LVM/VxFS vs. Linux LVM/Btrfs/Snapper)
+* Command Shells (sh/ksh vs. Bash)
 * Missing
 ** System Management Tools (SMH/SAM vs. Cockpit)
 ** Networking Configuration (Traditional vs. NetworkManager)
-** Command Shells (sh/ksh vs. Bash)
 
 === Package Management: SD-UX vs. Zypper and Cockpit
 
@@ -823,6 +823,119 @@ relocation. The philosophy is that modern storage arrays and drive
 firmware handle sector remapping transparently. If a drive presents a
 bad block to the OS, the filesystem (Btrfs) or the hardware RAID
 controller is expected to handle it, not the Volume Manager.
+
+=== Command Shells (sh/ksh vs. Bash)
+
+A significant friction point for HP-UX administrators moving to Linux is
+the shell environment. While HP-UX scripts and interactive sessions are
+deeply rooted in the *Korn Shell (ksh88)*, SLES 16 standardizes on *GNU
+Bash (Bourne Again SHell)*.
+
+==== *2.4.1 The Default Shell Landscape*
+
+* *HP-UX (Legacy):* The standard interactive shell is /usr/bin/ksh,
+which is based on the AT&T *ksh88* standard. While ksh93 (dtksh) is
+available on later HP-UX 11i versions, most system scripts and
+administrator muscle memory rely on ksh88 behaviors (e.g., set -A for
+arrays). +
+* *SLES 16 (Modern):* The default system and user shell is /bin/bash
+(version 5.x). Bash is largely a superset of the Bourne shell (sh) but
+includes features from ksh and csh.
+
+===== *A Note on mksh in SLES 16*
+
+SLES 16 repositories include the *MirBSD Korn Shell (mksh)*.
+Administrators might be tempted to install this and symlink /bin/ksh to
+mksh to maintain legacy scripts.
+
+* *Warning:* mksh is a descendant of pdksh (Public Domain ksh), not the
+official AT&T ksh88/93 source. It is *not* fully compatible with HP-UX
+ksh88. It handles arrays, coprocesses, and scoping differently. +
+* *Recommendation:* Rewrite system automation scripts in Bash. Use mksh
+only for interactive familiarity, not for critical infrastructure
+scripts.
+
+==== *2.4.2 Comparative Cheat Sheet: ksh88 vs. Bash*
+
+The following table highlights the 20 most critical syntax differences
+an administrator will encounter when porting scripts or working
+interactively.
+
+[width="100%",cols="<25%,<25%,<25%,<25%",options="header",]
+|===
+|Feature/Task |HP-UX (ksh88) |SLES 16 (Bash) |Migration Note
+|*Define Array* |`set -A arr val1 val2` |`arr=(val1 val2)` |*Major
+Breaker.* Bash does not support set -A.
+
+|*Access Array* |`${arr[1]}` |`${arr[1]}` |Same syntax (0-indexed).
+
+|*List All Array Elements* |`${arr[*]}` |`${arr[@]}` or `${arr[*]}`
+|Bash prefers @ for quoted expansion `${arr[@]}`.
+
+|*String Replacement* |_(External sed required)_
+|`${var/pattern/replace}` |Bash has built-in string manipulation; ksh88
+does not.
+
+|*String Slicing* |_(External cut required)_ |`${var:offset:length}`
+|e.g., `${var:0:4}` extracts first 4 chars.
+
+|*Upper/Lower Case* |`typeset -u var` / `typeset -l` |`${var^^}` /
+`${var,,}` |Bash uses parameter expansion for one-off case conversion.
+
+|*Process Substitution* |_(Requires named pipes/fifos)_
+|`diff <(cmd1) <(cmd2)` |Bash can feed command output as a file
+descriptor dynamically.
+
+|*Here Strings* |`echo "$var"`|`cmd` |`cmd <<< "$var"` |Bash shortcut to
+feed a string to stdin.
+
+|*Regular Expressions* |_(External grep required)_
+|`[[ $var =~ ^regex$ ]]` |Bash supports regex matching natively inside
+`[[ ]]`.
+
+|*Prompt Customization* |PS1=`$PWD $' |PS1=`\u@\h:\w\$' |Bash uses \
+escapes (\u user, \h host, \w cwd).
+
+|*Command Aliases* |alias name=`cmd' |alias name=`cmd' |Same syntax.
+
+|*Repeat Last Command* |r |!! |r is a standard alias in ksh; !! is
+history expansion in Bash.
+
+|*Search History* |r string |!string or Ctrl+R |Bash Ctrl+R provides
+interactive reverse search.
+
+|*Arithmetic* |(( i=i+1 )) or let |(( i++ )) |Bash supports C-style
+increment/decrement operators.
+
+|*Sequence Generation* |_(External loop required)_ |\{1..10} |Bash Brace
+Expansion generates sequences; ksh88 does not.
+
+|*Co-processes* |`cmd |&` |coproc cmd
+
+|*Local Variables* |typeset var |local var |local is the preferred Bash
+keyword inside functions.
+
+|*Function Export* |typeset -fx func |export -f func |Required to make
+functions visible to subshells.
+
+|*Test File Exists* |[[ -a file ]] |[[ -e file ]] |-a is deprecated in
+Bash; use -e.
+
+|*Reading User Input* |read var?Prompt |read -p ``Prompt'' var |ksh88
+embeds prompt in variable; Bash uses -p flag.
+|===
+
+===== *Practical Migration Strategy*
+
+[arabic]
+. *Shebang Update:* Change #!/usr/bin/ksh to #!/bin/bash. +
+. *Linting:* Install shellcheck on SLES 16 (zypper in ShellCheck). Run
+it against legacy scripts to instantly identify ksh88 syntax that fails
+in Bash. Mind that ShellCheck is not part of SLES 16.0, but the
+community supported PackageHub repository. +
+. *Environment:* Do not copy .profile from HP-UX to SLES. Use the SLES
+default .bashrc and port aliases manually to avoid environment
+pollution.
 
 == Advanced Systems Management and Security
 
