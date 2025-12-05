@@ -13,8 +13,8 @@
 * Package Management: SD-UX vs. Zypper and Cockpit
 * Disk, LVM, and Filesystems (HP LVM/VxFS vs. Linux LVM/Btrfs/Snapper)
 * Command Shells (sh/ksh vs. Bash)  
+* Network Configuration (Traditional vs. NetworkManager)
 * WIP
-	* Network Configuration (Traditional vs. NetworkManager)
 	* System Management Tools (SMH/SAM vs. Cockpit)
 
 ## Advanced Systems Management and Security
