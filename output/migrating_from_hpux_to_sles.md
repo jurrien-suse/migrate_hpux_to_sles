@@ -105,7 +105,7 @@ The divergence between HP-UX and SLES 16 begins at the very core of the operatin
 
 ## Init System and Service Management: From Sequence to Dependency
 
-The most immediate and jarring change for an HP-UX administrator is the replacement of the sequential System V initialization system with systemd. To understand the magnitude of this shift, one must analyze the boot process of both systems.
+The most immediate and obvious change for an HP-UX administrator is the replacement of the sequential System V initialization system with systemd. To understand the magnitude of this shift, one must analyze the boot process of both systems.
 
 ### Theoretical Divergence: Deterministic Sequence vs. Goal-Oriented Parallelism
 
@@ -140,21 +140,22 @@ The systemctl command is the omnipotent tool in SLES 16, replacing init, rc, and
 
 #### Scenario 1: Managing a Service (e.g., SSH)
 
-
-| Function    | HP-UX                           | SLES 16                         |
-| :---------- | :------------------------------ | :------------------------------ |
-| Start       | /sbin/init.d/secsh start  | systemctl start sshd.service |
-| Stop        | /sbin/init.d/secsh stop   | systemctl stop sshd.service  |
-| Status      | o native status command in the init script usually; admin checks `ps -ef `\| ` grep sshd.8 ` | systemctl status sshd.service |
+| Function  |HP-UX                          |SLES 16                        |
+|:----------|:------------------------------|:------------------------------|
+| Start     |/sbin/init.d/secsh start       | systemctl start sshd.service |
+| Stop      |/sbin/init.d/secsh stop        | systemctl stop sshd.service  |
+| Status    |There is no native status command in the init script usually; admin checks `ps -ef `\| ` grep sshd.8 ` | systemctl status sshd.service |
 
 *Insight:* The status command in systemd is far superior. It displays the service state (Active/Inactive), the main PID, the memory usage (via cgroups), and the last 10 lines of log output from Journald. This instant context is unavailable in HP-UX.9
 
 #### Scenario 2: Enabling a Service at Boot
 
-* **HP-UX:** The admin must edit /etc/rc.config.d/secsh and set SSHD\_START=1. This variable is checked by the script at runtime.  
 
-* **SLES 16:** systemctl enable sshd.service.  
-  * *Mechanism:* This command reads the \[Install\] section of the unit file and creates a symbolic link in /etc/systemd/system/multi-user.target.wants/ pointing to the unit. It is a filesystem operation, not a variable setting.
+| Function    | HP-UX                       | SLES 16                     |
+| :---------- | :-------------------------- | :-------------------------- |
+| Enable      | The admin must edit /etc/rc.config.d/secsh and set SSHD\_START=1. This variable is checked by the script at runtime. | systemctl enable sshd.service |
+
+*Linux Mechanism:* This command reads the \[Install\] section of the unit file and creates a symbolic link in /etc/systemd/system/multi-user.target.wants/ pointing to the unit. It is a filesystem operation, not a variable setting.
 
 ### Anatomy of a Systemd Unit vs. Init Script
 
@@ -226,10 +227,10 @@ One of the most profound changes in SLES 16 is the adoption of the **UsrEtc** (H
 
 ### The Philosophy: Immutable Vendors, Mutable Admins
 
-In HP-UX, the operating system and the local configuration are commingled.
+In HP-UX, as well as in earlier Linux distributions, the operating system and the local configuration are commingled. Let's review what this means taken a patch update as an example:
 
 * **HP-UX Reality:** When you install a patch (PHSS\_xxxxx), it might update a config file in /etc/opt/. If the administrator had modified that file, SD-UX might create a .save file or simply overwrite it, leading to "configuration drift" and breakage during patching.  
-* **SLES 16 Philosophy:** The /usr directory is the sole property of the OS vendor (SUSE). It is treated as immutable and can be mounted read-only. The /etc directory is the sole property of the administrator.
+* **SLES 16 Philosophy:** The /usr directory is the sole property of the OS vendor (SUSE). It is treated as immutable and can be mounted read-only. The /etc directory is the sole property of the administrator. This means that whatever changes an administrator has done in /etc, it will not be overwritten by a patch update.
 
 ### Practical Implications of UsrEtc
 
@@ -256,26 +257,6 @@ On SLES 16:
   * /usr/bin: Primary location for package binaries.  
   * /opt: Reserved for large, self-contained third-party applications (Oracle DB, SAP HANA, Microsoft, proprietary agents).  
   * /usr/local: Reserved for software compiled manually by the admin (./configure && make install). SLES package manager will *never* touch files in /usr/local.
-
-## Memory Management
-
-### Memory Overcommit vs. Strict Allocation
-
-HP-UX is conservative. A malloc() call generally reserves backing store immediately. If swap+RAM is full, malloc fails.  
-SLES 16 (Linux kernel) is optimistic. It uses Overcommit. malloc almost always succeeds, returning a pointer to virtual memory. Physical memory is only allocated when the page is written to (Fault-in).  
-Risk: If the system runs out of physical RAM, the Linux OOM Killer (Out of Memory Killer) activates. It uses a heuristic to select a process (often the one using the most memory, like a Database) and kill \-9 it to save the kernel.  
-Mitigation for DB Servers:  
-On SLES 16 hosting Oracle/SAP, administrators often tune /etc/sysctl.conf:
-
-```bash
-vm.overcommit\_memory \= 2  \# Strict accounting (like HP-UX)  
-vm.overcommit\_ratio \= 50  \# Limit to Swap \+ 50% RAM
-```
-
-This forces the kernel to behave more like HP-UX, returning errors on malloc rather than killing random processes later.
-
-**Caveat:** Please check the latest information on the SUSE website, and in the documentation of your ISV, whether these settings are recommended.
-
 
 # Daily Administration and Command Tools
 
