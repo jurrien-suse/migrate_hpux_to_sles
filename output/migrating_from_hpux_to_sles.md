@@ -750,14 +750,14 @@ When recompiling in-house C/C++ applications from HP-UX to SLES 16:
 # Migration Challenges outside the OS space
 
 
-# Migrating DATA
+## Migrating DATA
 
 
-# Migrating Applications
+## Migrating Applications
 
-## Applications where the source code is available (via an ISV, in-house, or open-source)
+### Applications where the source code is available (via an ISV, in-house, or open-source)
 
-## Applications where the source code is not available
+### Applications where the source code is not available
 
 
 
