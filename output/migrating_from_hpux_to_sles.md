@@ -781,3 +781,10 @@ When recompiling in-house C/C++ applications from HP-UX to SLES 16:
 | **System Log Review** | Check the system boot log | `tail /var/adm/syslog/syslog.log` | `journalctl -b` |
 
 
+## Authors and Contributors
+
+* Betancourt, Jose
+* Bloemen, Jurriën 
+* Eckermann, Matthias Georg
+
+

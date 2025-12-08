@@ -2,7 +2,7 @@
 # ------------------------
 
 # Automatically find all .md files and sort them (00-.., 10-.., 20-..)
-SOURCES	:= $(sort $(wildcard chapters/*.md))
+SOURCES	:= $(sort $(wildcard chapters/*.md)) AUTHORS.md
 
 # Output filenames
 PDF_OUT = migrating_from_hpux_to_sles.pdf
@@ -98,4 +98,13 @@ output:	$(PDF_OUT) $(EPUB_OUT) $(ADOC_OUT) $(DOCX_OUT) migrating_from_hpux_to_sl
 
 view:	migrating_from_hpux_to_sles.pdf
 	okular migrating_from_hpux_to_sles.pdf
+
+gitpush:
+	@echo "Committing changes..."
+	@# The $$msg is a SHELL variable, not a Make variable
+	@read -p "Enter commit message: " msg; \
+	git add .; \
+	git commit -m "$$msg"; \
+	git push
+	@echo "Changes pushed."
 
